@@ -1,0 +1,22 @@
+#!/usr/local/bin/ansible-playbook
+---
+- name: Deploy a Kubernetes cluster
+  hosts: localhost
+  connection: local
+  vars:
+    kubernetes_version: 1.24.10
+    containerd_version: 1.6.16
+    runc_version: 1.1.4
+    cni_plugins_version: 1.2.0
+    calico_version: 3.25.0
+
+  environment:
+    KUBECONFIG: /etc/kubernetes/admin.conf
+
+  roles:
+    - role: sysprep
+      tags:
+        - sysprep
+    - role: kubernetes
+      tags:
+        - kubernetes

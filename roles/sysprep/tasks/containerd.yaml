@@ -1,0 +1,32 @@
+---
+
+#
+# Install containerd container rumtime
+#
+- name: Extract containerd tarball
+  unarchive:
+    src: "https://github.com/containerd/containerd/releases/download/v{{ containerd_version }}/containerd-{{ containerd_version }}-linux-amd64.tar.gz"
+    dest: /usr/local/
+    remote_src: yes
+
+- name: Create containerd config folder
+  file:
+    state: directory
+    path: /etc/containerd
+
+- name: Create the containerd config.toml file
+  copy:
+    src: config.toml
+    dest: /etc/containerd/config.toml
+
+- name: Get the systemd service file
+  get_url:
+    url: "https://raw.githubusercontent.com/containerd/containerd/v{{ containerd_version }}/containerd.service"
+    dest: /usr/lib/systemd/system/containerd.service
+
+- name: Enable containerd service
+  systemd:
+    name: containerd.service
+    state: started
+    enabled: yes
+    daemon_reload: yes

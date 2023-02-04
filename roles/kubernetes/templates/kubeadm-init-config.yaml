@@ -1,0 +1,18 @@
+---
+apiVersion: kubeadm.k8s.io/v1beta3
+kind: ClusterConfiguration
+apiServer:
+  extraArgs:
+    anonymous-auth: "true"
+    enable-admission-plugins: "NodeRestriction,NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,DefaultTolerationSeconds,MutatingAdmissionWebhook,ValidatingAdmissionWebhook,Priority,ResourceQuota"
+controlPlaneEndpoint: "{{ ansible_facts['hostname'] }}.{{ ansible_facts['domain'] }}"
+networking:
+  serviceSubnet: "{{ service_network_cidr }}"
+  podSubnet: "{{ pod_network_cidr }}"
+...
+---
+apiVersion: kubeadm.k8s.io/v1beta3
+kind: InitConfiguration
+skipPhases:
+  - mark-control-plane
+...

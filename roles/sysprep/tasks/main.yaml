@@ -1,0 +1,18 @@
+---
+- name: System prep for Kubernetes
+  include_tasks: sysprep.yaml
+
+- name: Setup containerd
+  include_tasks: containerd.yaml
+
+- name: Setup runc
+  include_tasks: runc.yaml
+
+- name: Setup CNI plugins
+  include_tasks: cni_plugins.yaml
+
+- name: Setup Kubernetes repo
+  include_tasks: repo.yaml
+
+- name: Install kubeadm, kubelet, kubectl binaries
+  include_tasks: kubernetes.yaml

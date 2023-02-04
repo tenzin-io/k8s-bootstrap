@@ -1,0 +1,28 @@
+---
+- name: Send over kubeadm config file
+  template:
+    src: kubeadm-init-config.yaml
+    dest: /etc/kubernetes/init.yaml
+
+- name: Initialize Kubernetes
+  command: "kubeadm init --config /etc/kubernetes/init.yaml"
+  args:
+    creates: /etc/kubernetes/admin.conf
+
+- name: Wait for port 6443 to be ready
+  ansible.builtin.wait_for:
+    host: 127.0.0.1
+    port: 6443
+    delay: 30
+
+- name: Apply Calico networking
+  command: kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v{{ calico_version }}/manifests/tigera-operator.yaml
+
+- name: Send over Calico custome resources file
+  template:
+    src: calico-custom-resources.yaml
+    dest: /etc/kubernetes/calico-custom-resources.yaml
+  ignore_errors: True
+
+- name: Apply the Calico custom resources
+  command: kubectl apply -f /etc/kubernetes/calico-custom-resources.yaml
