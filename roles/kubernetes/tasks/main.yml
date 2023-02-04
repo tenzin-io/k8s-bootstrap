@@ -1,11 +1,11 @@
 ---
 - name: Send over kubeadm config file
   template:
-    src: kubeadm-init-config.yaml
-    dest: /etc/kubernetes/init.yaml
+    src: kubeadm-init.yaml
+    dest: /etc/kubernetes/kubeadm-init.yaml
 
 - name: Initialize Kubernetes
-  command: "kubeadm init --config /etc/kubernetes/init.yaml"
+  command: "kubeadm init --config /etc/kubernetes/kubeadm-init.yaml"
   args:
     creates: /etc/kubernetes/admin.conf
 
@@ -15,14 +15,10 @@
     port: 6443
     delay: 30
 
-- name: Apply Calico networking
-  command: kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v{{ calico_version }}/manifests/tigera-operator.yaml
-
-- name: Send over Calico custome resources file
+- name: Send over Calico custom resources file
   template:
-    src: calico-custom-resources.yaml
-    dest: /etc/kubernetes/calico-custom-resources.yaml
-  ignore_errors: True
+    src: calico.yaml
+    dest: /etc/kubernetes/calico.yaml
 
 - name: Apply the Calico custom resources
-  command: kubectl apply -f /etc/kubernetes/calico-custom-resources.yaml
+  command: kubectl apply -f /etc/kubernetes/calico.yaml
