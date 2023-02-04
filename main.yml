@@ -17,6 +17,15 @@
     - role: sysprep
       tags:
         - sysprep
+
     - role: kubernetes
       tags:
         - kubernetes
+
+    - role: tools/helm
+      tags:
+        - tools
+
+    - role: tools/terraform
+      tags:
+        - tools

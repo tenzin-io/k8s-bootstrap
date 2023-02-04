@@ -1,0 +1,25 @@
+---
+- name: Install pre-req packages
+  apt:
+    update_cache: True
+    name: '{{ package }}'
+  loop:
+    - gnupg
+    - software-properties-common
+  loop_control:
+    loop_var: package
+
+- name: Get key
+  apt_key:
+    url: https://apt.releases.hashicorp.com/gpg
+    state: present
+
+- name: Add repo
+  apt_repository:
+    repo: "deb [arch=amd64] https://apt.releases.hashicorp.com {{ ansible_facts['distribution_release'] }} main"
+
+- name: Install Terraform
+  apt:
+    update_cache: True
+    name: terraform
+
