@@ -28,3 +28,7 @@
     - role: tools/terraform
       tags:
         - tools
+
+    - role: tools/awscli
+      tags:
+        - tools
