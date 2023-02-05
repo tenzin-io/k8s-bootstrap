@@ -1,8 +1,10 @@
 ---
 - name: Get Helm install script
-  get_url: 
-    url: https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-    dest: /tmp/get_helm.sh
+  command: curl "https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3" -o "/tmp/get_helm.sh"
+  args:
+    creates: /tmp/get_helm.sh
 
 - name: Execute the install script
   command: bash /tmp/get_helm.sh
+  args:
+    creates: /usr/local/bin/helm
