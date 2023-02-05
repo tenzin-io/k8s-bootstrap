@@ -2,12 +2,10 @@
 - name: Install pre-req packages
   apt:
     update_cache: True
-    name: '{{ package }}'
+    name: '{{ item }}'
   loop:
     - gnupg
     - software-properties-common
-  loop_control:
-    loop_var: package
 
 - name: Get key
   apt_key:
