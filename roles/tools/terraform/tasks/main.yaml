@@ -1,5 +1,0 @@
----
-- name: Run Debian specific tasks
-  include_tasks: debian_ubuntu.yaml
-  when:
-    - ansible_facts["distribution"] == "Debian" or ansible_facts["distribution"] == "Ubuntu"
